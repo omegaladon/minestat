@@ -40,7 +40,7 @@ module.exports = {
 				{
 					name: `Invite`,
 					value: `[Click me!](
-						https://discord.com/api/oauth2/authorize?client_id=1110962137276371045&permissions=8&scope=bot%20applications.commands
+						https://discord.com/api/oauth2/authorize?client_id=1110962137276371045&permissions=2048&scope=bot%20applications.commands
 						)`,
 					inline: true,
 				},
