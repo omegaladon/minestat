@@ -42,19 +42,23 @@ module.exports = {
 		const type = interaction.options.getString("type") || "java";
 		const full = interaction.options.getBoolean("full") || false;
 
-
-		
 		const database = interaction.client.watcher.mongo.db("minestat");
 		const collection = database.collection("watch");
-		
+
 		const guildId = interaction.guild.id;
-		if (await collection.countDocuments({ guildId: guildId }) >= 4) {
+		if ((await collection.countDocuments({ guildId: guildId })) >= 4) {
 			return interaction.editReply({
 				content: `You can only watch up to \`4\` servers in \`1\` guild at a time.`,
 			});
 		}
 
-		if (await collection.countDocuments({ guildId: guildId, ip: ip, type: type }) >= 1) {
+		if (
+			(await collection.countDocuments({
+				guildId: guildId,
+				ip: ip,
+				type: type,
+			})) >= 1
+		) {
 			return interaction.editReply({
 				content: `You are already watching \`${ip}\`! To unwatch, use the \`/unwatch\` command.`,
 			});
@@ -77,6 +81,5 @@ module.exports = {
 		interaction.editReply({
 			content: `Successfully started watching \`${ip}\`!`,
 		});
-		
 	},
 };

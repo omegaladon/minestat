@@ -1,5 +1,10 @@
 const { default: axios } = require("axios");
-const { AttachmentBuilder, EmbedBuilder, Message, ActivityType } = require("discord.js");
+const {
+	AttachmentBuilder,
+	EmbedBuilder,
+	Message,
+	ActivityType,
+} = require("discord.js");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const config = require("./config");
 
@@ -212,12 +217,11 @@ class Watcher {
 	}
 
 	async update() {
-		console.log("Updating....");
 		this.client.user.setPresence({
 			activities: [
 				{
 					name: `${await this.getAmount()} MC servers`,
-					type: ActivityType.Watching
+					type: ActivityType.Watching,
 				},
 			],
 			status: "online",
@@ -231,8 +235,8 @@ class Watcher {
 					document;
 				this.editMessage(guildId, channelId, messageId, ip, type, full);
 			}
-		} finally {
-			console.log("Finsihed updating");
+		} catch (err) {
+			console.log(err);
 		}
 	}
 }

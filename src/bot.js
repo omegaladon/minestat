@@ -17,7 +17,7 @@ const GUILD_ID = config.dev_guild_id;
 const BOT_ID = config.bot_id;
 
 class Bot {
-	constructor(token, mode) {
+	constructor(token) {
 		this.client = new Client({
 			intents: [
 				GatewayIntentBits.Guilds,
@@ -25,7 +25,6 @@ class Bot {
 			],
 		});
 		this.client.token = token;
-		this.client.mode = mode;
 		this.client.commands = new Collection();
 		this.client.cooldowns = new Collection();
 
@@ -34,7 +33,7 @@ class Bot {
 		this.client.watcher = new Watcher(this.client);
 		setInterval(async () => {
 			await this.client.watcher.update();
-		}, 3000);
+		}, 30000);
 	}
 
 	registerCommands() {
@@ -60,18 +59,16 @@ class Bot {
 				console.log(
 					`Started refreshing ${commands.length} slash commands.`
 				);
-				const data =
-					this.client.mode === "dev"
-						? await rest.put(
-								Routes.applicationGuildCommands(
-									BOT_ID,
-									GUILD_ID
-								),
-								{ body: commands }
-						  )
-						: await rest.put(Routes.applicationCommands(BOT_ID), {
-								body: commands,
-						  });
+				const data = await rest.put(
+					Routes.applicationCommands(BOT_ID),
+					{
+						body: commands,
+					}
+				);
+				await rest.put(
+					Routes.applicationGuildCommands(BOT_ID, GUILD_ID),
+					{ body: commands }
+				);
 				console.log(
 					`Successfully reloaded ${data.length} slash commands.`
 				);

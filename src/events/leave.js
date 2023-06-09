@@ -8,7 +8,7 @@ module.exports = {
 		const database = guild.client.watcher.mongo.db("minestat");
 		const collection = database.collection("watch");
 
-        const guildId = guild.id;
-        const deleted = await collection.deleteMany({ guildId: guildId });
+		const guildId = guild.id;
+		const deleted = await collection.deleteMany({ guildId: guildId });
 	},
 };
