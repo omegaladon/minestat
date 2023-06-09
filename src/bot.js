@@ -8,10 +8,13 @@ const {
 	Routes,
 	Collection,
 } = require("discord.js");
+const NodeCache = require("node-cache");
+const config = require("./config");
+const Watcher = require("./watcher");
 
-require('dotenv').config()
-const GUILD_ID = process.env.GUILD_ID;
-const BOT_ID = process.env.BOT_ID;
+require("dotenv").config();
+const GUILD_ID = config.dev_guild_id;
+const BOT_ID = config.bot_id;
 
 class Bot {
 	constructor(token, mode) {
@@ -25,6 +28,13 @@ class Bot {
 		this.client.mode = mode;
 		this.client.commands = new Collection();
 		this.client.cooldowns = new Collection();
+
+		this.client.iconCache = new NodeCache();
+
+		this.client.watcher = new Watcher(this.client);
+		setInterval(async () => {
+			await this.client.watcher.update();
+		}, 3000);
 	}
 
 	registerCommands() {

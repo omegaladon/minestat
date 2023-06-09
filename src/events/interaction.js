@@ -12,15 +12,19 @@ module.exports = {
 		);
 		if (!command) return;
 
-        if (command.admin) {
-            if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-                await interaction.reply({
-                    content: "You don't have permission to use this command!",
-                    ephemeral: true,
-                });
-                return;
-            }
-        }
+		if (command.admin) {
+			if (
+				!interaction.member.permissions.has(
+					PermissionsBitField.Flags.Administrator
+				)
+			) {
+				await interaction.reply({
+					content: "You don't have permission to use this command!",
+					ephemeral: true,
+				});
+				return;
+			}
+		}
 
 		if (interaction.client.cooldowns.has(interaction.user.id)) {
 			const expirationTime =
@@ -40,10 +44,7 @@ module.exports = {
 
 		try {
 			await command.execute(interaction);
-            interaction.client.cooldowns.set(
-                interaction.user.id,
-                Date.now()
-            );
+			interaction.client.cooldowns.set(interaction.user.id, Date.now());
 		} catch (error) {
 			if (interaction.client.mode === "dev") console.error(error);
 			if (interaction.replied || interaction.deferred) {
