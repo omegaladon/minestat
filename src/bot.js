@@ -65,10 +65,6 @@ class Bot {
 						body: commands,
 					}
 				);
-				await rest.put(
-					Routes.applicationGuildCommands(BOT_ID, GUILD_ID),
-					{ body: commands }
-				);
 				console.log(
 					`Successfully reloaded ${data.length} slash commands.`
 				);
