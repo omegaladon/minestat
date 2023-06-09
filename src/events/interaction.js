@@ -46,7 +46,7 @@ module.exports = {
 			await command.execute(interaction);
 			interaction.client.cooldowns.set(interaction.user.id, Date.now());
 		} catch (error) {
-			if (interaction.client.mode === "dev") console.error(error);
+			console.error(error);
 			if (interaction.replied || interaction.deferred) {
 				await interaction.followUp({
 					content: "There was an error while executing this command!",
